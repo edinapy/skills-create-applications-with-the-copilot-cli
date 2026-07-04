@@ -3,6 +3,9 @@ const {
   subtract,
   multiply,
   divide,
+  modulo,
+  power,
+  squareRoot,
   calculate,
 } = require("../calculator");
 
@@ -49,6 +52,50 @@ describe("calculator basic operations", () => {
     test("throws on division by zero", () => {
       expect(() => divide(12, 0)).toThrow("Division by zero is not allowed.");
     });
+
+    describe("modulo", () => {
+      test("matches the extended-operations example: 5 % 2 = 1", () => {
+        expect(modulo(5, 2)).toBe(1);
+      });
+
+      test("returns the remainder", () => {
+        expect(modulo(10, 3)).toBe(1);
+      });
+
+      test("throws on modulo by zero", () => {
+        expect(() => modulo(12, 0)).toThrow("Modulo by zero is not allowed.");
+      });
+    });
+
+    describe("power", () => {
+      test("matches the extended-operations example: 2 ^ 3 = 8", () => {
+        expect(power(2, 3)).toBe(8);
+      });
+
+      test("raises a base to an exponent", () => {
+        expect(power(2, 8)).toBe(256);
+      });
+
+      test("returns 1 when exponent is zero", () => {
+        expect(power(9, 0)).toBe(1);
+      });
+    });
+
+    describe("squareRoot", () => {
+      test("matches the extended-operations example: sqrt(16) = 4", () => {
+        expect(squareRoot(16)).toBe(4);
+      });
+
+      test("returns the square root of a positive number", () => {
+        expect(squareRoot(81)).toBe(9);
+      });
+
+      test("throws on negative numbers", () => {
+        expect(() => squareRoot(-9)).toThrow(
+          "Square root of a negative number is not allowed."
+        );
+      });
+    });
   });
 });
 
@@ -74,7 +121,32 @@ describe("calculate dispatcher", () => {
     expect(calculate(20, "/", 5)).toBe(4);
   });
 
+  test("calculates using %", () => {
+    expect(calculate(10, "%", 3)).toBe(1);
+  });
+
+  test("calculates using % for the extended-operations example", () => {
+    expect(calculate(5, "%", 2)).toBe(1);
+  });
+
+  test("calculates using ^ and **", () => {
+    expect(calculate(2, "^", 8)).toBe(256);
+    expect(calculate(2, "**", 8)).toBe(256);
+  });
+
+  test("calculates using ^ for the extended-operations example", () => {
+    expect(calculate(2, "^", 3)).toBe(8);
+  });
+
+  test("calculates using sqrt", () => {
+    expect(calculate(81, "sqrt")).toBe(9);
+  });
+
+  test("calculates using sqrt for the extended-operations example", () => {
+    expect(calculate(16, "sqrt")).toBe(4);
+  });
+
   test("throws on unsupported operator", () => {
-    expect(() => calculate(1, "%", 2)).toThrow("Unsupported operator: %");
+    expect(() => calculate(1, "?", 2)).toThrow("Unsupported operator: ?");
   });
 });
